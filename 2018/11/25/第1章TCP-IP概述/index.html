@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-big-counter.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="网络协议分析,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Tonyqzy" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="1.1 网络互联与TCP/IPInternet算是”Network of Networks”.现在存在了很多种类的网络。比如：  局域网：  以太网 令牌环 光纤网 无线局域网 等等   城域网  广域网 互联网  出现很多中种类网络的原因很简单：没有可以完全满足所有要求的网络哦。 为了实现不同网络之间的通信，有一种思路是每个网络内部使用各自的通信协议，与其他网络通信时使用TCP/IP协议族">
+<meta name="keywords" content="网络协议分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第1章 TCP&#x2F;IP概述">
+<meta property="og:url" content="http://qdqzy/qdqzy.github.io/2018/11/25/第1章TCP-IP概述/index.html">
+<meta property="og:site_name" content="Tonyqzy">
+<meta property="og:description" content="1.1 网络互联与TCP/IPInternet算是”Network of Networks”.现在存在了很多种类的网络。比如：  局域网：  以太网 令牌环 光纤网 无线局域网 等等   城域网  广域网 互联网  出现很多中种类网络的原因很简单：没有可以完全满足所有要求的网络哦。 为了实现不同网络之间的通信，有一种思路是每个网络内部使用各自的通信协议，与其他网络通信时使用TCP/IP协议族">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-02T06:31:25.810Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第1章 TCP&#x2F;IP概述">
+<meta name="twitter:description" content="1.1 网络互联与TCP/IPInternet算是”Network of Networks”.现在存在了很多种类的网络。比如：  局域网：  以太网 令牌环 光纤网 无线局域网 等等   城域网  广域网 互联网  出现很多中种类网络的原因很简单：没有可以完全满足所有要求的网络哦。 为了实现不同网络之间的通信，有一种思路是每个网络内部使用各自的通信协议，与其他网络通信时使用TCP/IP协议族">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://qdqzy/qdqzy.github.io/2018/11/25/第1章TCP-IP概述/">
+
+
+
+
+
+  <title>第1章 TCP/IP概述 | Tonyqzy</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    <a href="https://github.com/qdqzy" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Tonyqzy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">大概是做算法与数据挖掘的</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/ || user" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://qdqzy/qdqzy.github.io/2018/11/25/第1章TCP-IP概述/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tony Qin">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/touxiang.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tonyqzy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第1章 TCP/IP概述</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-25T15:07:44+08:00">
+                2018-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-1-网络互联与TCP-IP"><a href="#1-1-网络互联与TCP-IP" class="headerlink" title="1.1 网络互联与TCP/IP"></a>1.1 网络互联与TCP/IP</h1><p>Internet算是”Network of Networks”.现在存在了很多种类的网络。比如：</p>
+<ul>
+<li><p>局域网：</p>
+<ul>
+<li>以太网</li>
+<li>令牌环</li>
+<li>光纤网</li>
+<li>无线局域网 等等</li>
+</ul>
+</li>
+<li><p>城域网</p>
+</li>
+<li>广域网</li>
+<li>互联网</li>
+</ul>
+<p>出现很多中种类网络的原因很简单：没有可以完全满足所有要求的网络哦。 为了实现不同网络之间的通信，有一种思路是<strong>每个网络内部使用各自的通信协议，与其他网络通信时使用TCP/IP协议族。</strong></p>
+<h2 id="1-1-1-用IP实现异构网络互联"><a href="#1-1-1-用IP实现异构网络互联" class="headerlink" title="1.1.1 用IP实现异构网络互联"></a>1.1.1 用IP实现异构网络互联</h2><pre><code>TCP/IP协议族中，能够屏蔽掉底层物理网络的差异，向上提供一致的协议就是IP——互联网协议。
+</code></pre><h2 id="1-1-2-通用的协议分层思想"><a href="#1-1-2-通用的协议分层思想" class="headerlink" title="1.1.2 通用的协议分层思想"></a>1.1.2 通用的协议分层思想</h2><p>网络中的通信是指在不同系统中的实体之间的通信。所谓实体，是指能发送和接受消息的对象。（终端，应用，和通信进程）</p>
+<p>
+<strong>大多数网络实现都是按照层次的方式来组织。每一层完成一定的内容，每一层又都建立在他的下层基础之上。每一层都是通过层间接口向上一层提供一定的服务，同时把这种服务实现的细节向上层屏蔽。</strong></p>
+<p>具体的定义包括：</p>
+<ul>
+<li><p>1）<em>第N层实体在实现自身定义的功能，只能用N-1层提供的服务。</em></p>
+</li>
+<li><p>2）<em>N层向N+1层提供服务，此服务不仅包含了N层本身所具备的所有功能，还包括由下层服务提供的功能总和。</em></p>
+</li>
+<li><p>3）<em>最底层只提供服务，是提供服务的基础；最高层只是用户，是使用服务的最高层；中间各层即是下一层用户，又是上一层服务的提供者。</em></p>
+</li>
+<li><p>4）<em>仅在相邻层间提供接口，下层服务的细节实现对于上层完全透明。</em></p>
+</li>
+</ul>
+<p>下层向上层提供的服务可以分为两大类：面向连接和无连接两种。</p>
+<h3 id="面向连接：类似于打电话。首先要建立链接。传送数据，释放链接。本质是像一个管道。发送者依次发送，接受者一依次取出。"><a href="#面向连接：类似于打电话。首先要建立链接。传送数据，释放链接。本质是像一个管道。发送者依次发送，接受者一依次取出。" class="headerlink" title="面向连接：类似于打电话。首先要建立链接。传送数据，释放链接。本质是像一个管道。发送者依次发送，接受者一依次取出。"></a>面向连接：类似于打电话。首先要建立链接。传送数据，释放链接。本质是像一个管道。发送者依次发送，接受者一依次取出。</h3><p>比较适合于文件传输</p>
+<h3 id="无链接：-类似于邮政。每个报文带有完整的目的地，并且每个报文都相互独立，有系统选定路径进行传输。"><a href="#无链接：-类似于邮政。每个报文带有完整的目的地，并且每个报文都相互独立，有系统选定路径进行传输。" class="headerlink" title="无链接： 类似于邮政。每个报文带有完整的目的地，并且每个报文都相互独立，有系统选定路径进行传输。"></a>无链接： 类似于邮政。每个报文带有完整的目的地，并且每个报文都相互独立，有系统选定路径进行传输。</h3><p>数字化语音等服务使用无链接服务。</p>
+<h2 id="1-2-2-TCP-IP分层模型"><a href="#1-2-2-TCP-IP分层模型" class="headerlink" title="1.2.2 TCP/IP分层模型"></a>1.2.2 TCP/IP分层模型</h2><ul>
+<li>应用层</li>
+<li>传输层</li>
+<li>IP层</li>
+<li>网络接口层</li>
+<li>硬件层</li>
+</ul>
+<p><strong>IP层是整个模型的关键</strong>，功能是使主机可以把IP数据报发送到任何网络，并使他们独立的传向目的地。</p>
+<p>IP定义了IP数据报格式和协议。即<strong>互联网协议IP</strong>。 他能把数据报发送到该去的地方，为IP数据报选择路由和避免拥塞。还需要根据需求发出和接受ICMP差错和控制报文。</p>
+<p><strong>传输层在TCP/IP模型中位于IP层之上</strong> 功能是使源端和目的端主机上对等实体可以进行会话。他定义了两个协议：</p>
+<ul>
+<li><strong>TCP传输控制协议</strong>  面向连接 无差错 为了避免发送过快接受过慢而是接收方无法处理，需要实时流量控制。</li>
+<li><strong>UDP用户数据报协议</strong>  不可靠无连接协议 不需要排序和流量控制能力</li>
+</ul>
+<p><strong>应用层</strong>  包含了所有的高层协议。Telnet、 FTP、SMTP等。</p>
+<h2 id="1-2-3-协议分层的原则"><a href="#1-2-3-协议分层的原则" class="headerlink" title="1.2.3 协议分层的原则"></a>1.2.3 协议分层的原则</h2><p>目标机第n层所受到的数据就是源主机第n层所发出的数据。</p>
+<h2 id="1-2-4-TCP-IP分层模型中的两个边界"><a href="#1-2-4-TCP-IP分层模型中的两个边界" class="headerlink" title="1.2.4 TCP/IP分层模型中的两个边界"></a>1.2.4 TCP/IP分层模型中的两个边界</h2><ul>
+<li><p>操作系统边界</p>
+<p>  传输层及旗下各层的协议，应用层中被IETF标准化的协议以及操作系统厂商自定义的协议属于操作系统内部实现。</p>
+</li>
+<li><p>协议边界</p>
+<p>  有IP地址找到相应的物理地址。通过<strong>地址解析协议ARP和反向地址解析协议RARP实现。</strong></p>
+</li>
+</ul>
+<h2 id="1-2-5-多路复用和多路分解"><a href="#1-2-5-多路复用和多路分解" class="headerlink" title="1.2.5 多路复用和多路分解"></a>1.2.5 多路复用和多路分解</h2><ul>
+<li><p>多路复用</p>
+<p>  所有基于UDP的应用把数据封装在UDP分组里面。TCP也是。所有TCP UDP ICMP报文都要封装在IP数据报中。IP数据报，ARP报文、RARP报文封装在物理帧中。</p>
+</li>
+<li><p>多路分解</p>
+<p>  是上一个过程的逆过程。每到一层就根据首部协议字段决定将数据提交给哪个协议模块。</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/网络协议分析/" rel="tag"># 网络协议分析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/24/Markdown的基本用法/" rel="next" title="Markdown的基本用法">
+                <i class="fa fa-chevron-left"></i> Markdown的基本用法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/25/第2章点到点协议PPP/" rel="prev" title="第2章点到点协议PPP">
+                第2章点到点协议PPP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/touxiang.JPG" alt="Tony Qin">
+          <p class="site-author-name" itemprop="name">Tony Qin</p>
+           
+              <p class="site-description motion-element" itemprop="description">Major in Machine Learning</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/qdqzy" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:qdqzy2017@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://weibo.com/u/5955144556" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      Weibo
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://m12r3dx.github.io/" title="M12R3DX" target="_blank">M12R3DX</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://co0ontty.github.io/" title="CO0ONTTY" target="_blank">CO0ONTTY</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://www.yuanze.wang" title="wangyz" target="_blank">wangyz</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-1-网络互联与TCP-IP"><span class="nav-number">1.</span> <span class="nav-text">1.1 网络互联与TCP/IP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-1-用IP实现异构网络互联"><span class="nav-number">1.1.</span> <span class="nav-text">1.1.1 用IP实现异构网络互联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-2-通用的协议分层思想"><span class="nav-number">1.2.</span> <span class="nav-text">1.1.2 通用的协议分层思想</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#面向连接：类似于打电话。首先要建立链接。传送数据，释放链接。本质是像一个管道。发送者依次发送，接受者一依次取出。"><span class="nav-number">1.2.1.</span> <span class="nav-text">面向连接：类似于打电话。首先要建立链接。传送数据，释放链接。本质是像一个管道。发送者依次发送，接受者一依次取出。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无链接：-类似于邮政。每个报文带有完整的目的地，并且每个报文都相互独立，有系统选定路径进行传输。"><span class="nav-number">1.2.2.</span> <span class="nav-text">无链接： 类似于邮政。每个报文带有完整的目的地，并且每个报文都相互独立，有系统选定路径进行传输。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-2-TCP-IP分层模型"><span class="nav-number">1.3.</span> <span class="nav-text">1.2.2 TCP/IP分层模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-3-协议分层的原则"><span class="nav-number">1.4.</span> <span class="nav-text">1.2.3 协议分层的原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-4-TCP-IP分层模型中的两个边界"><span class="nav-number">1.5.</span> <span class="nav-text">1.2.4 TCP/IP分层模型中的两个边界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-5-多路复用和多路分解"><span class="nav-number">1.6.</span> <span class="nav-text">1.2.5 多路复用和多路分解</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tony Qin</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Gemini
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
