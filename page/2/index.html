@@ -367,7 +367,10 @@
           本文源码请见我的GitHub
 2.8.1 Numpy中的快速排序：np.sort 和 np.argsort1import numpy as np
 12x = np.array([2,1,5,4,3])#不修改原始数组的基础上返回一个排好的数组np.sort(x)
-array([1, 2, 3, 4,
+array([1, 2, 3, 4, 5])
+12x.sort()print(x)#用排好的数组代替原始数组
+[1 2 3 4 5]
+1
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -496,7 +499,9 @@ array([1, 2, 3, 4,
           本文源码请见我的GitHub
 2.7 Fancy indexing传递一个索引数组来一次性获得多个数组元素
 1234import numpy as nprand = np.random.RandomState(42)x = rand.randint(100,size = 10)print(x)
-[5
+[51 92 14 71 60 20 82 86 74 74]
+1[x[3], x[7], x[2]]
+
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -626,7 +631,9 @@ array([1, 2, 3, 4,
 12import pandas as pdimport numpy as np
 1rainfall = pd.read_csv('./Seattle2014.csv')
 1rainfall =rainfall['PRCP'].values
-12inches = rain
+12inches = rainfall / 254 #1/1mm -&gt;inchesinches.shape
+(365,)
+1
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -754,7 +761,8 @@ array([1, 2, 3, 4,
           
           本文源码请见我的GitHub
 规则1.两个数组维度不同，将小维度的数组姓张将在最左边补12.数组在形状上在任意维度上都不匹配，则数组形状会沿着维度为1的维度扩展以匹配另外一个数组的形状。3.如果两个数组在形状上任意维度都不匹配且没有等于1的维度则会发生异常。1import numpy as np
-1
+12M = np.ones((2, 3))a = np.arange(3)
+12print(M.sha
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -884,7 +892,8 @@ array([1, 2, 3, 4,
 2.4 聚合：最小值、最大值、其他值2.4.1 数组值求和123import numpy as npL = np.random.random(10)sum(L)#python内置函数sum
 2.8464551359447516
 1np.sum(L)#np中的方法
-2.8
+2.8464551359447516
+2.4.2 max &amp; min123big_array = 
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1012,7 +1021,7 @@ array([1, 2, 3, 4,
           
           本文源码请见我的GitHub
 2.3 Numpy 数组的计算：通用函数numpy数组计算有时候会很慢，使之边块的关键是利用向量化操作，通常在通用函数（ufunc）中实现。
-2.3.1 缓慢的循环Python在每次循环首先检查对象的类型，并且动态查找可以使用该数据类型的正确函数。Cpython在每次循
+2.3.1 缓慢的循环Python在每次循环首先检查对象的类型，并且动态查找可以使用该数据类型的正确函数。Cpython在每次循环时必须做数据类型的检查和函数的调度。如果在编译代码是进行这样操作，就能在代码执行前知晓类型的生命，
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1140,7 +1149,7 @@ array([1, 2, 3, 4,
           
           本文源码请见我的GitHub
 2.2 Numpy数组基础2.2.1 Numpy数组属性12import numpy as npnp.random.seed(0)
-1234x1 = np.random.randint(10, size = 6)x2 = np.random.randint(10, si
+1234x1 = np.random.randint(10, size = 6)x2 = np.random.randint(10, size = (3,4))x3 = np.random.randint(10, size  = (3, 
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1266,7 +1275,8 @@ array([1, 2, 3, 4,
       
         
           
-          第一章 Ipython1.2.1 用符号？获取文档123456len?'''引入？作为相关信息的缩写，在想要查询的对象后面加上？可以查询''''''也可以在自己创建的函数和对象中惊醒查看帮助文档，方法是再函数创建一个docstring，在第一行放置了一个字符串字面量'''def square(a):
+          第一章 Ipython1.2.1 用符号？获取文档123456len?'''引入？作为相关信息的缩写，在想要查询的对象后面加上？可以查询''''''也可以在自己创建的函数和对象中惊醒查看帮助文档，方法是再函数创建一个docstring，在第一行放置了一个字符串字面量'''def square(a):    '''这个函数是返回一个实数的平方'''    return a ** 2
+1square?
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1393,7 +1403,8 @@ array([1, 2, 3, 4,
         
           
           逻辑回归 Logistics Regression4.1分类问题之前的章节介绍的是如何进行线性回归的问题，本质是回归；这个章节开始介绍分类问题。最常用的回归算法是逻辑回归，就是这个标题。
-分类问题典型的例子是肿瘤分类，判断是良性还是恶性肿瘤；进行垃圾邮件的标记等等。分类可以分为很多种，但是最基本的是
+分类问题典型的例子是肿瘤分类，判断是良性还是恶性肿瘤；进行垃圾邮件的标记等等。分类可以分为很多种，但是最基本的是二分类。
+我们将因变量(dependent variable)可能属于的两个类分别称为负向类(neg
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1520,7 +1531,7 @@ array([1, 2, 3, 4,
         
           
           多变量线性回归 Linear Regression with Multiple Variables3.1多维特征&nbsp;&nbsp;&nbsp;&nbsp;其实这个是第四节，但是上一节讲的是线性代数，都是简单的初等变换用到的知识，不用看了。
-&nbsp;&nbsp;&nbsp;&nbsp;第四节
+&nbsp;&nbsp;&nbsp;&nbsp;第四节从原来只有单一变量（size-&gt;price）h𝜃(𝑥) = 𝜃0 + 𝜃1𝑥 拓展到
           ...
           <!--noindex-->
           <div class="post-button text-center">
